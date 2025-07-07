@@ -17,7 +17,7 @@ ARGV5=$5 # Fifth argument is Base folder of LoxBerry
 pluginname=$3
 
 echo "<INFO> (Re-)Installing NodeJS..."
-/boot/dietpi/dietpi-software reinstall 9
+#/boot/dietpi/dietpi-software reinstall 9
 
 # Exit with Status 0
 exit 0
