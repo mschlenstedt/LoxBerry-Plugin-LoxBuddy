@@ -1,0 +1,282 @@
+<TMPL_IF FORM_LOXICON>
+<style>
+iframe {
+  resize: vertical;
+  overflow: auto;
+}
+.ui-resizable-handle { display:none !important; }
+</style>
+<center>
+<iframe src="./elfinder.loxoneicons.html" width="90%" height="440" style="border:1px solid black;" id="elfinder" name="elfinder">
+</iframe>
+</center>
+
+<br><br><br>
+
+<center>
+	<table width=80%" border=0>
+		<tr>
+			<td>
+				<TMPL_VAR LOXICON.HINT_1>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br><hr><br>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<TMPL_VAR LOXICON.HINT_2>
+			</td>
+		</tr>
+		<tr>
+			<td align=center>
+				<table width=50%" border=0>
+					<tr>
+						<td align=center>
+							<a href="javascript:add();" id="btnadd" data-role="button" data-inline="false" data-icon="plus" data-mini="true"
+								data-transition="flow"><TMPL_VAR LOXICON.BUTTON_ADD></a>
+						</td>
+						<td>
+							&nbsp;
+						</td>
+						<td align=center>
+							<a href="javascript:remove();" id="btnremove" data-role="button" data-inline="false" data-icon="minus" data-mini="true"
+								data-transition="flow"><TMPL_VAR LOXICON.BUTTON_REMOVE></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br><hr><br>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<TMPL_VAR LOXICON.HINT_3>
+			</td>
+		</tr>
+		<tr>
+			<td align=center>
+				<table width=50%" border=0>
+					<tr>
+						<td align=center>
+							<a href="javascript:create();" id="btncreate" data-role="button" data-inline="false" data-icon="recycle" data-mini="true"
+								data-transition="flow"><TMPL_VAR LOXICON.BUTTON_CREATE></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br><hr><br>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<TMPL_VAR LOXICON.HINT_4>
+			</td>
+		</tr>
+		<tr>
+			<td align=center>
+				<table width=50%" border=0>
+					<tr>
+						<td align=center>
+							<a href="javascript:upload();" id="btnupload" data-role="button" data-inline="false" data-icon="arrow-u" data-mini="true"
+								data-transition="flow"><TMPL_VAR LOXICON.BUTTON_UPLOAD></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br><hr></br>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<TMPL_VAR LOXICON.HINT_5>
+			</td>
+		</tr>
+		<tr>
+			<td align=center>
+				<table width=50%" border=0>
+					<tr>
+						<td align=center>
+							<a href="./files/IconLibrary.zip" id="btndownload" data-role="button" data-inline="false" data-icon="arrow-d" data-mini="true"
+								data-transition="flow"><TMPL_VAR LOXICON.BUTTON_DOWNLOAD></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br><hr></br>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<TMPL_VAR LOXICON.HINT_6>
+			</td>
+		</tr>
+	</table>
+<center>
+
+<script>
+function add() {
+	console.log ("Adding Icons");
+	$("[id^=btn]").addClass('ui-disabled');
+	$.ajax( { 
+			type: 'POST',
+			data: { 
+				ajax: 'add'
+			}
+		} )
+	.fail(function( data ) {
+		console.log( "Adding Icons Fail", data );
+		$("#btnadd").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+	})
+	.done(function( data ) {
+		console.log( "Adding Icons Success: ", data );
+		if(data.error) {
+			$("#btnadd").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+		} else {
+			$("#btnadd").attr("style", "background-color: #83C43B; color: white;text-shadow: none");
+		}
+	})
+	.always(function( data ) {
+		$("[id^=btn]").removeClass('ui-disabled');
+	})
+}
+
+function remove() {
+	console.log ("Remove Icons");
+	$("[id^=btn]").addClass('ui-disabled');
+	$.ajax( { 
+			type: 'POST',
+			data: { 
+				ajax: 'remove'
+			}
+		} )
+	.fail(function( data ) {
+		console.log( "Removing Icons Fail", data );
+		$("#btnremove").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+	})
+	.done(function( data ) {
+		console.log( "Removing Icons Success: ", data );
+		if(data.error) {
+			$("#btnremove").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+		} else {
+			$("#btnremove").attr("style", "background-color: #83C43B; color: white;text-shadow: none");
+		}
+	})
+	.always(function( data ) {
+		$("[id^=btn]").removeClass('ui-disabled');
+	})
+}
+
+function create() {
+	console.log ("Create Icon Lib");
+	$("[id^=btn]").addClass('ui-disabled');
+	$.ajax( { 
+			type: 'POST',
+			data: { 
+				ajax: 'create'
+			}
+		} )
+	.fail(function( data ) {
+		console.log( "Create Icon Lib Fail", data );
+		$("#btncreate").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+	})
+	.done(function( data ) {
+		console.log( "Create Icon Lib Success: ", data );
+		if(data.error) {
+			$("#btncreate").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+		} else {
+			$("#btncreate").attr("style", "background-color: #83C43B; color: white;text-shadow: none");
+		}
+	})
+	.always(function( data ) {
+		$("[id^=btn]").removeClass('ui-disabled');
+	})
+}
+
+function upload() {
+	console.log ("Upload Icon Lib");
+	$("[id^=btn]").addClass('ui-disabled');
+	$.ajax( { 
+			type: 'POST',
+			data: { 
+				ajax: 'upload'
+			}
+		} )
+	.fail(function( data ) {
+		console.log( "Upload Icon Lib Fail", data );
+		$("#btnupload").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+	})
+	.done(function( data ) {
+		console.log( "Upload Icon Lib Success: ", data );
+		if(data.error) {
+			$("#btnupload").attr("style", "background-color: #FF3E3E; color: white;text-shadow: none");
+		} else {
+			$("#btnupload").attr("style", "background-color: #83C43B; color: white;text-shadow: none");
+		}
+	})
+	.always(function( data ) {
+		$("[id^=btn]").removeClass('ui-disabled');
+	})
+}
+</script>
+</TMPL_IF>
+
+
+
+
+<TMPL_IF FORM_DOWNLOAD>
+<center>
+	<table width=80%" border=0>
+		<tr>
+			<td>
+				<TMPL_VAR DOWNLOAD.HINT_1><br><br>
+				<b><TMPL_VAR DOWNLOAD.HINT_2>
+				<TMPL_VAR DOWNLOAD.HINT_3></b>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td align=center>
+				<table width=50%" border=0>
+					<tr>
+						<td align=center>
+							<a href="./files/loxone_icons/loxone_icons.zip" id="btndownload2" data-role="button" data-inline="false" data-icon="arrow-d" data-mini="true"
+								data-transition="flow"><TMPL_VAR DOWNLOAD.BUTTON_DOWNLOAD></a>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				&nbsp;
+			</td>
+		</tr>
+	</table>
+</TMPL_IF>
+
+
+
+
+<TMPL_IF FORM_LOG>
+	<TMPL_VAR LOGLIST>
+</TMPL_IF>
+

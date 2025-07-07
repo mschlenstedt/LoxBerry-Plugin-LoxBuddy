@@ -1,2 +1,2 @@
 # LoxBerry-Plugin-LoxBuddy
-Plugin to install LoxBuddy App
+A LoxBerry Plugin. LoxWiki: https://wiki.loxberry.de
