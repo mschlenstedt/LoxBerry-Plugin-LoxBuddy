@@ -17,7 +17,13 @@ ARGV5=$5 # Fifth argument is Base folder of LoxBerry
 pluginname=$3
 
 echo "<INFO> (Re-)Installing NodeJS..."
+# Restarts Apache, so here not possible :-(
 #/boot/dietpi/dietpi-software reinstall 9
+cd /tmp
+curl -sSfL https://raw.githubusercontent.com/MichaIng/nodejs-linux-installer/master/node-install.sh -o node-install.sh
+chmod +x node-install.sh
+./node-install.sh
+rm node-install.sh
 
 # Exit with Status 0
 exit 0

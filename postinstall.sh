@@ -34,7 +34,7 @@ echo "<INFO> Downloading LoxBuddy App from https://github.com/nufke/loxbuddy..."
 cd $LBPBIN/$pluginname
 git clone https://github.com/nufke/loxbuddy
 echo "Return Code is $?"
-if [ -e "$LBPBIN/$pluginname/loxbuddy/package.json" ]; then
+if [ -e "$LBPBIN/$pluginname/loxbuddy/package.json" ] && [ $? -eq 0 ]; then
     echo "<OK> Download of LoxBuddy successfull."
 else
     echo "<WARNING> Download of LoxBuddy failed. The plugin will not work without."
@@ -47,19 +47,25 @@ echo "<INFO> Installing LoxBuddy App..."
 cd $LBPBIN/$pluginname/loxbuddy
 npm install
 echo "Return Code is $?"
+if [ $? -eq 0 ]; then
+    echo "<OK> Installation of LoxBuddy App successfull."
+else
+    echo "<WARNING> Installation of LoxBuddy App failed. The plugin will not work without."
+    echo "<WARNING> Giving up."
+    exit 2
+fi
 
 # Install Icons
 echo "<INFO> Downloading Loxone Icon Library from Miniserver..."
-MSIP=$(perl -e "use LoxBerry::System;%miniservers=LoxBerry::System::get_miniservers();print \$miniservers{$1}{IPAddress};")
-MSCRED=$(perl -e "use LoxBerry::System;%miniservers=LoxBerry::System::get_miniservers();print \$miniservers{$1}{Credentials};")
-MSFTPPORT=$(perl -e "use LoxBerry::System; print LoxBerry::System::get_ftpport($1);")
+MSIP=$(perl -e "use LoxBerry::System;%miniservers=LoxBerry::System::get_miniservers();print \$miniservers{1}{IPAddress};")
+MSCRED=$(perl -e "use LoxBerry::System;%miniservers=LoxBerry::System::get_miniservers();print \$miniservers{1}{Credentials};")
+MSFTPPORT=$(perl -e "use LoxBerry::System; print LoxBerry::System::get_ftpport(1);")
 FTPFULLURI="ftp://$MSCRED@$MSIP:$MSFTPPORT/sys/IconLibrary.zip"
-
 mkdir -p $LBPBIN/$pluginname/loxbuddy/static/loxicons
 cd $LBPBIN/$pluginname/loxbuddy/static/loxicons
 wget $FTPFULLURI
 echo "Return Code is $?"
-if [ -e "$LBPBIN/$pluginname/loxbuddy/static/loxicons/IconLibrary.zip" ]; then
+if [ -e "$LBPBIN/$pluginname/loxbuddy/static/loxicons/IconLibrary.zip" ]  && [ $? -eq 0 ]; then
     echo "<OK> Download of Loxone IconLibrary successfull."
 else
     echo "<WARNING> Download of IconLibrary failed. The plugin will not work without."
@@ -68,7 +74,7 @@ else
 fi
 unzip IconLibrary.zip
 echo "Return Code is $?"
-if [ -e "$LBPBIN/$pluginname/loxbuddy/static/loxicons/IconLibrary.xml" ]; then
+if [ -e "$LBPBIN/$pluginname/loxbuddy/static/loxicons/IconLibrary.xml" ]  && [ $? -eq 0 ]; then
     echo "<OK> Installing of Loxone IconLibrary successfull."
 else
     echo "<WARNING> Installing of IconLibrary failed. The plugin will not work without."
