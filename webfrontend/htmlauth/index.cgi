@@ -71,8 +71,8 @@ if( $q->{ajax} ) {
 
 	require LoxBerry::Web;
 
-	# Default is measurements_settings form
-	$q->{form} = "sensors" if !$q->{form};
+	# Default is loxbuddy_settings form
+	$q->{form} = "loxbuddy" if !$q->{form};
 
 	if ($q->{form} eq "loxbuddy") {
 		my $templatefile = "$lbptemplatedir/loxbuddy_settings.html";
@@ -153,7 +153,8 @@ sub preparetemplate
 	$navbar{20}{active} = 1 if $q->{form} eq "loxbuddy";
 
 	$navbar{30}{Name} = "$L{'COMMON.LABEL_WEBUI'}";
-	$navbar{30}{URL} = '';
+	$navbar{30}{URL} = 'http://' . LoxBerry::System::get_localip() . ':5173';
+	$navbar{30}{target} = '_blank';
 	
 	$navbar{98}{Name} = "$L{'COMMON.LABEL_LOGS'}";
 	$navbar{98}{URL} = 'index.cgi?form=logs';
