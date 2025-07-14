@@ -7,7 +7,7 @@ use LoxBerry::JSON;
 use Getopt::Long;
 #use warnings;
 #use strict;
-use Data::Dumper;
+#use Data::Dumper;
 
 # Version of this script
 my $version = "0.1.0";
@@ -41,8 +41,8 @@ LOGSTART "Starting create_config";
 
 # Check for MS
 if ( $ms eq "" ) {
-	LOGCRIT "You have to specify the Miniserver you would like to connect to.";
-	exit (1);
+	LOGINF "No Miniserver specified. Unsing No. 1";
+	$ms = "1";
 }
 my %miniservers = LoxBerry::System::get_miniservers();
 if (! %miniservers{$ms}) {
@@ -69,16 +69,28 @@ if (! $mqtt->{brokerhost} || ! $mqtt->{websocketport} || ! $mqtt->{brokeruser} |
 	LOGCRIT "Cannot read MQTT config or some data is missing.";
 	exit(1);
 }
+if ( $mqtt->{brokerhost} eq "localhost" || $mqtt->{brokerhost} eq "127.0.0.1" ) {
+	$mqtt->{brokerhost} = LoxBerry::System::get_localip();
+}
 LOGINF "Found MQTT Config: " . "Host:" . $mqtt->{brokerhost} . " Websocket:" . $mqtt->{websocketport} . " User:" . $mqtt->{brokeruser} . " Pass:*******";
 
-# Write Config
+# Write Config if any changes
+my $content = "";
 my $string = "MQTT_HOSTNAME=" . $mqtt->{brokerhost} . "\nMQTT_PORT=" . $mqtt->{websocketport} . "\nMQTT_USERNAME=" . $mqtt->{brokeruser} . "\nMQTT_PASSWORD=" . $mqtt->{brokerpass} . "\nMQTT_TOPIC=" . $cfgl2m->{"miniserver"}->{$ms}->{"mqtt_topic_ms"};
-my $response = LoxBerry::System::write_file($lbpbindir . "/loxbuddy/.env.local", $string);
-if( $response ) {
-	LOGCRIT "Cannot write config: $response"; 
-	exit (1);
+if ( -e $lbpbindir . "/loxbuddy/.env.local" ) {
+	$content = LoxBerry::System::read_file($lbpbindir . "/loxbuddy/.env.local");
+}
+if ( $string ne $content ) {
+	LOGINF "Settings changed - writing new config";
+	my $response = LoxBerry::System::write_file($lbpbindir . "/loxbuddy/.env.local", $string);
+	if( $response ) {
+		LOGCRIT "Cannot write config: $response"; 
+		exit (1);
+	}
+	LOGOK "Config was written successfully.";
+} else {
+	LOGINF "Settings haven't changed. No config was written.";
 }
 
 # All went fine
-LOGOK "Config was written successfully.";
 exit (0);
